@@ -4,8 +4,8 @@ import (
 	"net/http"
 
 	"github.com/go-chi/chi"
-	"github.com/rasyad91/goBookings/pkg/config"
-	"github.com/rasyad91/goBookings/pkg/handlers"
+	"github.com/rasyad91/goBookings/internal/config"
+	"github.com/rasyad91/goBookings/internal/handlers"
 )
 
 func routes(app *config.AppConfig) http.Handler {

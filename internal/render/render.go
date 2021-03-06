@@ -9,8 +9,8 @@ import (
 	"text/template"
 
 	"github.com/justinas/nosurf"
-	"github.com/rasyad91/goBookings/pkg/config"
-	"github.com/rasyad91/goBookings/pkg/models"
+	"github.com/rasyad91/goBookings/internal/config"
+	"github.com/rasyad91/goBookings/internal/models"
 )
 
 var function = template.FuncMap{}

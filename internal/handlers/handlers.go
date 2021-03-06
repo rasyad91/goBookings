@@ -5,9 +5,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/rasyad91/goBookings/pkg/config"
-	"github.com/rasyad91/goBookings/pkg/models"
-	"github.com/rasyad91/goBookings/pkg/render"
+	"github.com/rasyad91/goBookings/internal/config"
+	"github.com/rasyad91/goBookings/internal/models"
+	"github.com/rasyad91/goBookings/internal/render"
 )
 
 // Repository Pattern start
