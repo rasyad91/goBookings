@@ -1,0 +1,55 @@
+.footer {
+    height: 3em;
+    padding: 1em;
+    margin-top: 3em;
+    background-color: #0a043c;
+    color: #bbbbbb;
+}
+
+.room-img {
+    max-width: 50%;
+}
+
+.redText {
+    color: red
+}
+.datepicker{
+    z-index: 100000;
+}
+
+.datepicker-header .datepicker-controls .button{
+    border-color: transparent;
+    font-weight: bold;
+}
+
+.button {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0 0 1rem 0;
+    font-family: inherit;
+    padding: .85em 1em;
+    -webkit-appearance: none;
+    border: 1px solid transparent;
+    border-radius: 0;
+    -webkit-transition: background-color .25s ease-out,color .25s ease-out;
+    transition: background-color .25s ease-out,color .25s ease-out;
+    font-size: .9rem;
+    line-height: 1;
+    text-align: center;
+    cursor: pointer; 
+    background-color: whitesmoke;
+    border-color: whitesmoke;
+
+    }
+
+    .btn-primary{
+        color: black;
+        background-color: whitesmoke;
+        border-color: whitesmoke;
+    }
+
+    .btn-primary:hover{
+        color: rgb(255, 255, 255);
+        background-color: rgb(105, 105, 105);
+        border-color: rgb(105, 105, 105);
+    }

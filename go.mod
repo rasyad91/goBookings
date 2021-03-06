@@ -1,6 +1,6 @@
 module github.com/rasyad91/goBookings
 
-go 1.15
+go 1.16
 
 require (
 	github.com/alexedwards/scs/v2 v2.4.0

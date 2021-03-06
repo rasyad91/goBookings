@@ -41,6 +41,7 @@ func main() {
 	render.NewTemplates(&app)
 
 	r := handlers.NewRepo(&app)
+
 	handlers.NewHandlers(r)
 
 	//http.HandleFunc("/", handlers.Repo.Home)

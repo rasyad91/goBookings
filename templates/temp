@@ -1,0 +1,26 @@
+    let attention = Prompt()
+
+    document.getElementById("colorButton").addEventListener("click", function () {
+        let html = `
+        <form method = "post" action="" id="check-availability-form" novalidate class="needs-validation">
+            <div class="form-row">
+    <div class="col">
+        <div id="reservation-date-modal">
+            <div class="row">
+
+                <div class="col">
+                    <input type="text" disabled required class="form-control" name="start" id="start" placeholder="Arrival">
+                </div>
+                <div class="col">
+                    <input type="text" disabled required class="form-control" name="end" id="end" placeholder="Departure">
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</form>
+        `
+        let attention = Prompt()
+        attention.custom({ html: html, title: "Pick your dates" })
+
+    })
