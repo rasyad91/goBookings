@@ -8,20 +8,20 @@
             <h1 class="mt-5">Search Availability</h1>
 
             <!-- To do - to handle form sent to server -->
-            <form action="reservation.html" method="GET" class="align-items-center needs-validation" novalidate>
-
+            <form action="/search-availability" method="POST" class="align-items-center needs-validation" novalidate>
+                <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
                 <div class="form-row mt-5 mb-5">
                     <div class="col">
                         <div id="reservation-date">
                             <div class="row">
 
                                 <div class="col-md-4">
-                                    <input required type="text" class="form-control" name="start-date"
+                                    <input required type="text" class="form-control" name="start"
                                         placeholder="Arrival" aria-describedby="startDateHelp">
                                 </div>
 
                                 <div class="col-md-4">
-                                    <input required type="text" class="form-control" name="end-date"
+                                    <input required type="text" class="form-control" name="end"
                                         placeholder="Departure" aria-describedby="endDateHelp">
                                 </div>
                             </div>

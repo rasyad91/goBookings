@@ -47,7 +47,7 @@ func main() {
 	//http.HandleFunc("/", handlers.Repo.Home)
 	//http.HandleFunc("/about", handlers.Repo.About)
 
-	fmt.Printf("Starting at port %s", port)
+	fmt.Printf("Starting at port %s\n", port)
 	//log.Fatalln(http.ListenAndServe(port, nil))
 
 	srv := &http.Server{

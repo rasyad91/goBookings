@@ -8,6 +8,7 @@ import (
 	"path/filepath"
 	"text/template"
 
+	"github.com/justinas/nosurf"
 	"github.com/rasyad91/goBookings/pkg/config"
 	"github.com/rasyad91/goBookings/pkg/models"
 )
@@ -22,12 +23,13 @@ func NewTemplates(a *config.AppConfig) {
 }
 
 // AddDefaultData adds default data for models.TemplateData
-func AddDefaultData(td *models.TemplateData) *models.TemplateData {
+func AddDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateData {
+	td.CSRFToken = nosurf.Token(r)
 	return td
 }
 
 // Templates using templates using text/template
-func Templates(w http.ResponseWriter, tmpl string, td *models.TemplateData) {
+func Templates(w http.ResponseWriter, r *http.Request, tmpl string, td *models.TemplateData) {
 	// get the template cache from the app config
 	tc := app.TemplateCache
 
@@ -38,7 +40,7 @@ func Templates(w http.ResponseWriter, tmpl string, td *models.TemplateData) {
 
 	buf := new(bytes.Buffer)
 
-	td = AddDefaultData(td)
+	td = AddDefaultData(td, r)
 
 	err := t.Execute(buf, td)
 	if err != nil {

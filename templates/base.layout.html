@@ -180,22 +180,19 @@
 
         async function custom(c) {
             const {
-                text = "",
                 title = "",
                 html = "",
             } = c;
 
-            const { value: formValues } = await Swal.fire({
+            const { value: result } = await Swal.fire({
                 title,
                 html,
                 focusConfirm: false,
                 showCancelButton: true,
                 willOpen: () => {
-                    const elem = document.getElementById('reservation-date-modal');
-                    const rangepicker = new DateRangePicker(elem, {
-                        format: "dd-mm-yyyy",
-                        showOnFocus: true
-                    });
+                    if (c.willOpen !== undefined) {
+                        c.willOpen();
+                    }
                 },
                 preConfirm: () => {
                     return [
@@ -204,14 +201,24 @@
                     ]
                 },
                 didOpen: ()=> {
-                    document.getElementById('start').removeAttribute('disabled')
-                    document.getElementById('end').removeAttribute('disabled')
-
+                    if (c.didOpen !== undefined) {
+                        c.didOpen();
+                    }
                 }
             })
+            if (result) {
+                if (result.dismiss !== Swal.DismissReason.cancel) {
+                    if (result.value !== "" ) {
+                        if (c.callback != undefined) {
+                            c.callback(result);
+                        } else {
+                            c.callback(false);
+                        }
+                    }
+                } else {
+                    c.callback(false)
+                }
 
-            if (formValues) {
-                Swal.fire(JSON.stringify(formValues))
             }
         }
 

@@ -3,39 +3,41 @@
 
 {{define "content"}}
 <div class="container">
-    <div class="row">
-      <div class="col text-center">
-        <img src="./static/images/generals-quarters.png" class="img-fluid room-img" alt="General's Quarters">
-      </div>
+  <div class="row">
+    <div class="col text-center">
+      <img src="./static/images/generals-quarters.png" class="img-fluid room-img" alt="General's Quarters">
     </div>
   </div>
-  <div class="container">
-    <div class="row">
-      <div class="col">
-        <h1 class="text-center mt-4">General's Quarters</h1>
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab ratione, harum enim incidunt vitae dolore quasi
-          dolor facere eum unde aliquid cumque molestiae? Deserunt sint aspernatur iure repellat laudantium Lorem ipsum
-          dolor sit amet consectetur adipisicing elit. Vel sint illum perspiciatis deserunt provident! Consequatur,
-          deleniti quia consequuntur quasi reprehenderit ullam sequi eius quae laboriosam culpa a deserunt accusamus
-          nisi?
-        </p>
-      </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col">
+      <h1 class="text-center mt-4">General's Quarters</h1>
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ab ratione, harum enim incidunt vitae dolore quasi
+        dolor facere eum unde aliquid cumque molestiae? Deserunt sint aspernatur iure repellat laudantium Lorem ipsum
+        dolor sit amet consectetur adipisicing elit. Vel sint illum perspiciatis deserunt provident! Consequatur,
+        deleniti quia consequuntur quasi reprehenderit ullam sequi eius quae laboriosam culpa a deserunt accusamus
+        nisi?
+      </p>
     </div>
-    <div class="row">
-      <div class="col text-center">
-        <a id="check-availability" href="#!" class="btn btn-primary">Check Availability</a>
-      </div>
+  </div>
+  <div class="row">
+    <div class="col text-center">
+      <a id="check-availability" href="#!" class="btn btn-primary">Check Availability</a>
     </div>
-{{end}}
+  </div>
+  {{end}}
 
-{{define "js"}}
-<script>
-        let attention = Prompt()
+  {{define "js"}}
+  <script>
+    let attention = Prompt()
 
-document.getElementById("check-availability").addEventListener("click", function () {
-    let html = `
-    <form method = "post" action="" id="check-availability-form" novalidate class="needs-validation">
+    document.getElementById("check-availability").addEventListener("click", function () {
+      let html = `
+    <form action="/search-availability-json" method = "post" action="" id="check-availability-form" novalidate class="needs-validation">
+      <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+
         <div class="form-row">
             <div class="col">
                 <div id="reservation-date-modal">
@@ -51,9 +53,45 @@ document.getElementById("check-availability").addEventListener("click", function
             </div>
         </div>
     </form>`
-    let attention = Prompt()
-    attention.custom({ html: html, title: "Pick your dates" })
+      let attention = Prompt()
+      attention.custom({
+        html: html,
+        title: "Pick your dates",
 
-})
-</script>
-{{end}}
+        willOpen: () => {
+          const elem = document.getElementById('reservation-date-modal');
+          const rangepicker = new DateRangePicker(elem, {
+            format: "dd-mm-yyyy",
+            showOnFocus: true
+          });
+        },
+
+        didOpen: ()=> {
+                    document.getElementById('start').removeAttribute('disabled')
+                    document.getElementById('end').removeAttribute('disabled')
+
+                },
+
+
+        callback: function (result) {
+          console.log("called");
+
+          let form = document.getElementById("check-availability-form");
+          let formData = new FormData(form);
+          formData.append("csrf_token", "{{.CSRFToken}}")
+
+
+          fetch('/search-availability-json', {
+            method: "post",
+            body: formData
+          })
+            .then(response => response.json())
+            .then(data => {
+              console.log(data)
+            })
+        }
+      })
+
+    })
+  </script>
+  {{end}}
