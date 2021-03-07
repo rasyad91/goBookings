@@ -31,6 +31,15 @@ func AddDefaultData(td *models.TemplateData, r *http.Request) *models.TemplateDa
 // Templates using templates using text/template
 func Templates(w http.ResponseWriter, r *http.Request, tmpl string, td *models.TemplateData) {
 	// get the template cache from the app config
+
+	if !app.UseCache {
+		tc, err := CreateTemplateCache()
+		if err != nil {
+			log.Fatal("cannot create template cache")
+		}
+		app.TemplateCache = tc
+	}
+
 	tc := app.TemplateCache
 
 	t, ok := tc[tmpl]

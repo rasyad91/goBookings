@@ -6,6 +6,7 @@ import (
 	"net/http"
 
 	"github.com/rasyad91/goBookings/internal/config"
+	"github.com/rasyad91/goBookings/internal/forms"
 	"github.com/rasyad91/goBookings/internal/models"
 	"github.com/rasyad91/goBookings/internal/render"
 )
@@ -65,6 +66,15 @@ func (rp *Repository) Reservation(rw http.ResponseWriter, r *http.Request) {
 	remoteIP := r.RemoteAddr
 	rp.App.Session.Put(r.Context(), "remote_ip", remoteIP)
 	render.Templates(rw, r, "make-reservations.page.html", &models.TemplateData{})
+}
+
+// PostReservation handles the posting of a reservation form
+func (rp *Repository) PostReservation(rw http.ResponseWriter, r *http.Request) {
+	render.Templates(rw, r, "make-reservations.page.html",
+		&models.TemplateData{
+			Form: forms.New(nil),
+		})
+
 }
 
 // Availability renders the search availability page and displays form
