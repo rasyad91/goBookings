@@ -36,8 +36,7 @@ func NewHandlers(r *Repository) {
 
 // Home is the home page handler
 func (rp *Repository) Home(rw http.ResponseWriter, r *http.Request) {
-	remoteIP := r.RemoteAddr
-	rp.App.Session.Put(r.Context(), "remote_ip", remoteIP)
+
 	render.Templates(rw, r, "home.page.html", &models.TemplateData{})
 }
 
@@ -56,31 +55,65 @@ func (rp *Repository) About(rw http.ResponseWriter, r *http.Request) {
 
 // Contact renders the make-a-reservation page and displays form
 func (rp *Repository) Contact(rw http.ResponseWriter, r *http.Request) {
-	remoteIP := r.RemoteAddr
-	rp.App.Session.Put(r.Context(), "remote_ip", remoteIP)
+
 	render.Templates(rw, r, "contact.page.html", &models.TemplateData{})
 }
 
 // Reservation renders the make-a-reservation page and displays form
 func (rp *Repository) Reservation(rw http.ResponseWriter, r *http.Request) {
-	remoteIP := r.RemoteAddr
-	rp.App.Session.Put(r.Context(), "remote_ip", remoteIP)
-	render.Templates(rw, r, "make-reservations.page.html", &models.TemplateData{})
+
+	var emptyReservation models.Reservation
+	data := make(map[string]interface{})
+	data["reservation"] = emptyReservation
+
+	fmt.Println("Reservation: ", data["reservation"])
+	render.Templates(rw, r, "make-reservations.page.html",
+		&models.TemplateData{
+			Form: forms.New(nil),
+			Data: data,
+		})
 }
 
 // PostReservation handles the posting of a reservation form
 func (rp *Repository) PostReservation(rw http.ResponseWriter, r *http.Request) {
-	render.Templates(rw, r, "make-reservations.page.html",
-		&models.TemplateData{
-			Form: forms.New(nil),
-		})
+	fmt.Println("PostReservation")
+	err := r.ParseForm()
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	reservation := models.Reservation{
+		FirstName: r.Form.Get("first_name"),
+		LastName:  r.Form.Get("last_name"),
+		Email:     r.Form.Get("email"),
+		Phone:     r.Form.Get("phone"),
+	}
+
+	form := forms.New(r.PostForm)
+
+	form.Required("first_name", "last_name", "email", "phone")
+	form.MinLength("first_name", 3)
+	form.IsEmail("email")
+
+	if !form.Valid() {
+		data := make(map[string]interface{})
+		data["reservation"] = reservation
+
+		fmt.Println("PostReservation: ", data["reservation"])
+
+		render.Templates(rw, r, "make-reservations.page.html",
+			&models.TemplateData{
+				Form: form,
+				Data: data,
+			})
+		return
+	}
 
 }
 
 // Availability renders the search availability page and displays form
 func (rp *Repository) Availability(rw http.ResponseWriter, r *http.Request) {
-	remoteIP := r.RemoteAddr
-	rp.App.Session.Put(r.Context(), "remote_ip", remoteIP)
+
 	render.Templates(rw, r, "search-availability.page.html", &models.TemplateData{})
 }
 
@@ -113,14 +146,12 @@ func (rp *Repository) AvailabilityJSON(rw http.ResponseWriter, r *http.Request) 
 
 // Generals is the General's Quarters page handler
 func (rp *Repository) Generals(rw http.ResponseWriter, r *http.Request) {
-	remoteIP := r.RemoteAddr
-	rp.App.Session.Put(r.Context(), "remote_ip", remoteIP)
+
 	render.Templates(rw, r, "generals.page.html", &models.TemplateData{})
 }
 
 // Majors is the Major's Suites page handler
 func (rp *Repository) Majors(rw http.ResponseWriter, r *http.Request) {
-	remoteIP := r.RemoteAddr
-	rp.App.Session.Put(r.Context(), "remote_ip", remoteIP)
+
 	render.Templates(rw, r, "majors.page.html", &models.TemplateData{})
 }
