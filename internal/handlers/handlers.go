@@ -3,6 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/http"
 
 	"github.com/rasyad91/goBookings/internal/config"
@@ -108,6 +109,33 @@ func (rp *Repository) PostReservation(rw http.ResponseWriter, r *http.Request) {
 			})
 		return
 	}
+	rp.App.Session.Put(r.Context(), "reservation", reservation)
+
+	// http.statusseeother for redirecting
+	http.Redirect(rw, r, "/reservation-summary", http.StatusSeeOther)
+
+}
+
+// ReservationSummary shows summary after user submitted request for reservation at PostReservation
+func (rp *Repository) ReservationSummary(rw http.ResponseWriter, r *http.Request) {
+
+	// needs to type assert
+	reservation, ok := rp.App.Session.Get(r.Context(), "reservation").(models.Reservation)
+	if !ok {
+		log.Println("Cannot get item from session")
+		rp.App.Session.Put(r.Context(), "error", "Cannot get reservation from session")
+		http.Redirect(rw, r, "/", http.StatusTemporaryRedirect)
+		return
+	}
+
+	rp.App.Session.Remove(r.Context(), "reservation")
+	data := make(map[string]interface{})
+	data["reservation"] = reservation
+
+	render.Templates(rw, r, "reservation-summary.page.html",
+		&models.TemplateData{
+			Data: data,
+		})
 
 }
 

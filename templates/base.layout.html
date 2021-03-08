@@ -125,6 +125,19 @@
         })
     }
 
+    // eslint-disable-next-line [RULE]  
+    {{with .Error}} 
+    notify("{{.}}", "error")
+    {{end}}
+
+    {{with .Warning}}
+    notify("{{.}}", "warning")
+    {{end}}
+
+    {{with .Flash}}
+    notify("{{.}}", "success")
+    {{end}}
+    /* eslint-enable */
 
     function Prompt() {
         let toast = function (c) {
