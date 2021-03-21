@@ -1,0 +1,10 @@
+mode: set
+github.com/rasyad91/goBookings/cmd/web/middleware.go:10.45,20.2 3 1
+github.com/rasyad91/goBookings/cmd/web/middleware.go:23.50,25.2 1 1
+github.com/rasyad91/goBookings/cmd/web/routes.go:11.49,35.2 17 1
+github.com/rasyad91/goBookings/cmd/web/main.go:23.13,26.16 2 0
+github.com/rasyad91/goBookings/cmd/web/main.go:30.2,39.16 4 0
+github.com/rasyad91/goBookings/cmd/web/main.go:26.16,28.3 1 0
+github.com/rasyad91/goBookings/cmd/web/main.go:42.18,58.16 10 1
+github.com/rasyad91/goBookings/cmd/web/main.go:62.2,70.12 6 1
+github.com/rasyad91/goBookings/cmd/web/main.go:58.16,60.3 1 0

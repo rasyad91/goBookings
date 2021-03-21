@@ -127,8 +127,9 @@ func (rp *Repository) ReservationSummary(rw http.ResponseWriter, r *http.Request
 		http.Redirect(rw, r, "/", http.StatusTemporaryRedirect)
 		return
 	}
-
+	
 	rp.App.Session.Remove(r.Context(), "reservation")
+
 	data := make(map[string]interface{})
 	data["reservation"] = reservation
 
