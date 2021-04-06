@@ -21,8 +21,8 @@ func New(data url.Values) *Form {
 }
 
 // Has checks if form fields is in post and not empty
-func (f *Form) Has(field string, r *http.Request) bool {
-	x := r.Form.Get(field)
+func (f *Form) Has(field string, _ *http.Request) bool {
+	x := f.Get(field)
 	if x == "" {
 		f.Errors.Add(field, "This field is mandatory")
 		fmt.Println(field, " is mandatory")
@@ -59,10 +59,10 @@ func (f *Form) MinLength(field string, length int) bool {
 }
 
 // IsEmail checks if field is email
-func (f *Form) IsEmail(field string) {
-	x := f.Get(field)
+func (f *Form) IsEmail() {
+	x := f.Get("email")
 	if !valid.IsEmail(x) {
-		f.Errors.Add(field, "Invalid email")
+		f.Errors.Add("email", "Invalid email")
 		fmt.Println("Invalid email")
 	}
 }
