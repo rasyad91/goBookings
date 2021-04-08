@@ -7,11 +7,18 @@
         <div class="col">
             {{$res := index .Data "reservation"}}
             <h1 class=" mt-4">Make Reservation</h1>
+            <br>
 
-            <p><strong>Reservation Details</strong></p><br>
-            <p>Arrival: {{index .StringMap "start_date"}}</p><br>
-            <p>Departure: {{index .StringMap "end_date"}}</p><br>
-            <p>Room Name: {{$res.Room.RoomName}}</p><br>
+            <p><strong>Reservation Details</strong></p>
+            <div class="col-md-4 mb-1">
+                <p><strong>Arrival: </strong>{{index .StringMap "start_date"}}</p>
+            </div>
+            <div class="col-md-4 mb-1">
+                <p><strong>Departure: </strong>{{index .StringMap "end_date"}}</p>
+            </div>
+            <div class="col-md-4 mb-1">
+                <p><strong>Room Name: </strong>{{$res.Room.RoomName}}</p>
+            </div>
 
 
 
