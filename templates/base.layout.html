@@ -65,7 +65,7 @@
 
 {{end}}
 
-<div class="row footer mt-5 bg-dark fixed-bottom">
+<div class="row footer mt-5 bg-dark">
     <div class="col">
         Left
     </div>
@@ -195,13 +195,18 @@
             const {
                 title = "",
                 html = "",
+                icon = "",
+                showConfirmButton = true,
+                showCancelButton = true,
             } = c;
 
             const { value: result } = await Swal.fire({
+                icon,
                 title,
                 html,
                 focusConfirm: false,
-                showCancelButton: true,
+                showCancelButton: showCancelButton,
+                showConfirmButton: showConfirmButton,
                 willOpen: () => {
                     if (c.willOpen !== undefined) {
                         c.willOpen();

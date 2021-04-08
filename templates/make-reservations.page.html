@@ -5,13 +5,24 @@
 <div class="container">
     <div class="row">
         <div class="col">
+            {{$res := index .Data "reservation"}}
             <h1 class=" mt-4">Make Reservation</h1>
 
+            <p><strong>Reservation Details</strong></p><br>
+            <p>Arrival: {{index .StringMap "start_date"}}</p><br>
+            <p>Departure: {{index .StringMap "end_date"}}</p><br>
+            <p>Room Name: {{$res.Room.RoomName}}</p><br>
 
-            {{$res := index .Data "reservation"}}
+
+
             <!-- To do - to handle form sent to server -->
             <form method="post" action="/make-reservations" class="" novalidate>
                 <input type="hidden" name="csrf_token" value="{{.CSRFToken}}">
+
+                <input type="hidden" name="start_date" value="{{index .StringMap "start_date"}}">
+                <input type="hidden" name="end_date" value="{{index .StringMap "end_date"}}">
+                <input type="hidden" name="room_id" value="{{$res.RoomID}}">
+
 
                 <div class="col-md-4 mb-1">
                     <label for="first_name">First name:</label>
@@ -19,9 +30,9 @@
                     {{with .Form.Errors.Get "first_name"}}
                     <label class="text-danger">{{.}}</label>
                     {{end}}
-                    
-                    <input type="text" class="form-control {{with .Form.Errors.Get "first_name"}} is-invalid {{end}}" id="first_name" name="first_name"
-                        required autocomplete="off"  value="{{$res.FirstName}}">
+
+                    <input type="text" class="form-control {{with .Form.Errors.Get " first_name"}} is-invalid {{end}}"
+                        id="first_name" name="first_name" required autocomplete="off" value="{{$res.FirstName}}">
                 </div>
 
 
@@ -32,8 +43,8 @@
                     <label class="text-danger">{{.}}</label>
                     {{end}}
 
-                    <input type="text" class="form-control {{with .Form.Errors.Get "last_name"}} is-invalid {{end}}" id="last_name" name="last_name" required
-                        autocomplete="off" value="{{$res.LastName}}">
+                    <input type="text" class="form-control {{with .Form.Errors.Get " last_name"}} is-invalid {{end}}"
+                        id="last_name" name="last_name" required autocomplete="off" value="{{$res.LastName}}">
                 </div>
 
 
@@ -45,8 +56,8 @@
                     {{end}}
 
 
-                    <input type="email" class="form-control {{with .Form.Errors.Get "email"}} is-invalid {{end}}" id="email" name="email" required
-                        autocomplete="off" value="{{$res.Email}}">
+                    <input type="email" class="form-control {{with .Form.Errors.Get " email"}} is-invalid {{end}}"
+                        id="email" name="email" required autocomplete="off" value="{{$res.Email}}">
                 </div>
 
                 <div class="col-md-4 mb-5">
@@ -56,8 +67,8 @@
                     <label class="text-danger">{{.}}</label>
                     {{end}}
 
-                    <input type="tel" class="form-control {{with .Form.Errors.Get "phone"}} is-invalid {{end}}" id="phone" name="phone" required
-                        autocomplete="off" value="{{$res.Phone}}">
+                    <input type="tel" class="form-control {{with .Form.Errors.Get " phone"}} is-invalid {{end}}"
+                        id="phone" name="phone" required autocomplete="off" value="{{$res.Phone}}">
                 </div>
 
                 <hr class="col-md-4">
