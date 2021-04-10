@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"testing"
 	"text/template"
 	"time"
 
@@ -26,7 +27,7 @@ var function = template.FuncMap{}
 var infoLog *log.Logger
 var errorLog *log.Logger
 
-func getRoutes() http.Handler {
+func TestMain(m *testing.M) {
 
 	// what am i going to put in the session
 	gob.Register(models.Reservation{})
@@ -48,6 +49,12 @@ func getRoutes() http.Handler {
 
 	app.Session = session
 
+	mailChan := make(chan models.MailData)
+	app.MailChan = mailChan
+	defer close(app.MailChan)
+
+	listenForMail()
+
 	tc, err := CreateTestTemplateCache()
 	if err != nil {
 		log.Fatal("cannot create template cache")
@@ -56,10 +63,15 @@ func getRoutes() http.Handler {
 	app.TemplateCache = tc
 	app.UseCache = true
 
-	r := NewRepo(&app)
+	r := NewTestRepo(&app)
 	NewHandlers(r)
 	render.NewRenderer(&app)
 	helpers.NewHelpers(&app)
+
+	os.Exit(m.Run())
+}
+
+func getRoutes() http.Handler {
 
 	mux := chi.NewRouter()
 	// mux.Use(NoSurf)
@@ -128,8 +140,17 @@ func CreateTestTemplateCache() (map[string]*template.Template, error) {
 		}
 
 		ts, err = ts.ParseGlob(fmt.Sprintf("%s/*.layout.html", pathToTemplates))
+		if err != nil {
+			log.Fatal(err)
+		}
 		myCache[name] = ts
 
 	}
 	return myCache, nil
+}
+
+func listenForMail() {
+	go func() {
+		<-app.MailChan
+	}()
 }

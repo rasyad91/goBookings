@@ -8,7 +8,7 @@ import (
 
 func TestNoSurf(t *testing.T) {
 	var mh testHandler
-	h := NoSurf(&mh)
+	h := NoSurfMiddleware(&mh)
 
 	switch h.(type) {
 	case http.Handler: // do nothing means h is type httphandler, therefore pass
@@ -19,7 +19,7 @@ func TestNoSurf(t *testing.T) {
 
 func TestSessionLoad(t *testing.T) {
 	var mh testHandler
-	h := SessionLoad(&mh)
+	h := SessionLoadMiddleware(&mh)
 	switch h.(type) {
 	case http.Handler: // do nothing means h is type httphandler, therefore pass
 	default:

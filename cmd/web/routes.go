@@ -10,8 +10,8 @@ import (
 
 func routes(app *config.AppConfig) http.Handler {
 	mux := chi.NewRouter()
-	mux.Use(NoSurf)
-	mux.Use(SessionLoad)
+	mux.Use(NoSurfMiddleware)
+	mux.Use(SessionLoadMiddleware)
 
 	mux.Get("/", handlers.Repo.Home)
 	mux.Get("/about", handlers.Repo.About)
@@ -29,6 +29,21 @@ func routes(app *config.AppConfig) http.Handler {
 	mux.Get("/book-room", handlers.Repo.BookRoom)
 
 	mux.Get("/contact", handlers.Repo.Contact)
+
+	mux.Get("/user/login", handlers.Repo.ShowLogin)
+	mux.Post("/user/login", handlers.Repo.PostLogin)
+
+	mux.Get("/user/logout", handlers.Repo.Logout)
+
+	mux.Route("/admin", func(mux chi.Router) {
+		mux.Use(AuthMiddleware)
+
+		mux.Get("/dashboard", handlers.Repo.AdminDashBoard)
+		mux.Get("/reservations-new", handlers.Repo.AdminNewReservation)
+		mux.Get("/reservations-all", handlers.Repo.AdminAllReservation)
+		mux.Get("/reservations-calendar", handlers.Repo.AdminCalendarReservation)
+
+	})
 
 	fileServer := http.FileServer(http.Dir("./static/"))
 	mux.Handle("/static/*", http.StripPrefix("/static", fileServer))
