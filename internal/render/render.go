@@ -5,20 +5,54 @@ import (
 	"log"
 	"net/http"
 	"path/filepath"
+	"strconv"
 	"text/template"
+	"time"
 
 	"github.com/justinas/nosurf"
 	"github.com/rasyad91/goBookings/internal/config"
 	"github.com/rasyad91/goBookings/internal/models"
 )
 
-var function = template.FuncMap{}
+var function = template.FuncMap{
+	"shortDate":   ShortDate,
+	"formatDate":  FormatDate,
+	"iterate":     Iterate,
+	"intToString": IntToString,
+}
 var app *config.AppConfig
 var pathToTemplates string = "./templates"
 
 // NewRenderer sets the config for the template package
 func NewRenderer(a *config.AppConfig) {
 	app = a
+}
+
+// Short date returns time in DD-MM-YYYY format
+func ShortDate(t time.Time) string {
+	return t.Format("2006-01-02")
+}
+
+func FormatDate(t time.Time, f string) string {
+	return t.Format(f)
+}
+
+// returns a slice of ints, starting at 1 going to count
+func Iterate(count int) []int {
+	var items []int
+
+	for i := 1; i <= count; i++ {
+		items = append(items, i)
+	}
+	return items
+}
+
+func IntToString(i int) string {
+	if i < 10 {
+		s := strconv.Itoa(i)
+		return fmt.Sprintf("0%s", s)
+	}
+	return strconv.Itoa(i)
 }
 
 // AddDefaultData adds default data for models.TemplateData

@@ -5,8 +5,7 @@ import (
 )
 
 func TestAdd(t *testing.T) {
-	var e errors
-	e = make(errors)
+	e := make(errors)
 
 	e.Add("field", "message")
 	if _, ok := e["field"]; !ok {
@@ -20,8 +19,7 @@ func TestAdd(t *testing.T) {
 }
 
 func TestGet(t *testing.T) {
-	var e errors
-	e = make(errors)
+	e := make(errors)
 	e.Add("field", "message")
 
 	if x := e.Get("field"); x != "message" {

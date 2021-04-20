@@ -1,11 +1,63 @@
 {{template "admin" .}}
 
+{{define "css"}}
+<link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" type="text/css">
+
+{{end}}
+
 {{define "page-title"}}
-    Dashboard
+Dashboard
 {{end}}
 
 {{define "content"}}
-    <div class="col-md-12">
-        Admin all reservations
-    </div>
+<div class="col-md-12">
+    <h4>All reservations</h4>
+    {{$res := index .Data "reservations"}}
+    <table class="table table-hover" id="new-res">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Room</th>
+                <th>Arrival</th>
+                <th>Departure</th>
+                <th>View Details</th>
+
+            </tr>
+
+        </thead>
+        <tbody>
+            {{range $res}}
+            <tr>
+                <td>{{.ID}}</td>
+                <td>{{.FirstName}} {{.LastName}}</td>
+                <td>{{.Room.RoomName}}</td>
+                <td>{{shortDate .StartDate}}</td>
+                <td>{{shortDate .EndDate}}</td>
+                <td>
+                    <a class="btn btn-danger btn-sm" href="/admin/reservations/all/{{.ID}}/show" tabindex="-1"
+                        aria-disabled="true">view</a>
+
+
+                </td>
+            </tr>
+
+
+
+
+            {{end}}
+</div>
+{{end}}
+
+{{define "js"}}
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" type="text/javascript"></script>
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const dataTable = new simpleDatatables.DataTable("#new-res", {
+            columns: [
+                { select: 0, sort: "asc" }
+            ]
+        })
+    })
+</script>
 {{end}}

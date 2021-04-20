@@ -337,7 +337,8 @@ func TestRepository_AvailabilityJSON(t *testing.T) {
 
 	var j jsonResponse
 
-	err := json.Unmarshal([]byte(w.Body.String()), &j)
+	// []byte(w.Body.String()) => w.Body.Bytes()
+	err := json.Unmarshal(w.Body.Bytes(), &j)
 	if err != nil {
 		t.Error("failed to parse json")
 	}

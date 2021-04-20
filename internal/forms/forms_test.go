@@ -86,7 +86,7 @@ func TestForm_Has(t *testing.T) {
 	r, _ := http.NewRequest("POST", "/", nil)
 	form := New(r.PostForm)
 
-	if x := form.Has("Hello", r); x == true {
+	if x := form.Has("Hello"); x == true {
 		t.Error("Expected false")
 	}
 
@@ -94,7 +94,7 @@ func TestForm_Has(t *testing.T) {
 	postedData.Add("Hello", "Value")
 	form = New(postedData)
 
-	if x := form.Has("Hello", r); x == false {
+	if x := form.Has("Hello"); x == false {
 		t.Error("Expected false")
 	}
 }
